@@ -1,0 +1,17 @@
+extends layout
+block content
+  table
+    thead
+      tr
+        td= "match Name"
+        td= "your opponent"
+        td= "your points"
+        td= "your opponents points"
+        td= "location"
+    each item in foundMatches
+      tr
+        td= item.name
+        td= item.player2
+        td= item.player1Points
+        td= item.player2Points
+        td= item.location

@@ -1,0 +1,25 @@
+extends layout
+block content
+  h1= title
+  p Welcome to #{title}
+
+  //register form
+  form(method='POST' action='/match')
+
+    div.form-group
+      label(for='player2') opponentID:
+      input#opponentID.form-control(type='text',  name='opponentID')
+
+    div.form-group
+      label(for='Ownpoints') points:
+      input#Ownpoints.form-control(type='int' name='Ownpoints')
+
+    div.form-group
+      label(for='opponentspoints') opponentspoints:
+      input#opponentspoints.form-control(type='int' name='opponentspoints')
+
+    div.form-group
+      label(for='location') location:
+      input#olocation.form-control(type='text' name='location')
+
+    button.btn.btn-primary(type='submit') create new match history

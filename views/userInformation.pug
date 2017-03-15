@@ -1,0 +1,22 @@
+extends layout
+block content
+
+  p #{foundUser}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Name:
+      input#name.form-control(type='text', value = foundUser.name,  name='name')
+    div.form-group
+      label(for='username') username:
+      input#username.form-control(type='text', value = foundUser.username,  name='username')
+    div.form-group
+      label(for='age') age:
+      input#username.form-control(type='number',  name='age')
+    div.form-group
+      label(for='password') password:
+      input#username.form-control(type='text',value = foundUser.password,  name='password')
+
+
+
+    button.btn.btn-primary(type='submit') Change your information
