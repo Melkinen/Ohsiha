@@ -34,10 +34,14 @@ että ne toimivat herokussa.
 Sain tietää express-generatorista ja nodemonista Mikaelin luentodemosta.
 käytin tutoriaalia -> https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
 mallina miten tietokantaa käytetään mongoose kirjaston avulla.
+
+Laitoin projektin githubiin: https://github.com/Melkinen/Ohsiha
+Tällä hetkellä aion tehdä sukapallotietokannan, johon rekisteröidytään ja lisätään historiaa pelatuista otteluista.
+Jos keksin jonkin kuningasidean niin teen projektista jotain muuta.
 Helppoja asioita:
   - Tarvittavien kirjastojen ja ohjelmien asentaminen.
   - Tutorialeja oli netissä runsaasti, joten niitä seuraamalla saa jo paljon aikaan.
-  
+
 Vaikeita asioita:
   - Kaikki tarvittavat kirjastot tulee muistaa asentaa -s komennon avulla että ne lisätään package tiedostoon,
   jos ne eivät ole siellä sovellus ei toimi.
