@@ -10,7 +10,7 @@ var UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   admin: Boolean,
-  location: String,
+  hometown: String,
   meta: {
     age: Number,
     website: String

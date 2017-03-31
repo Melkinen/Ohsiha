@@ -4,14 +4,17 @@ block content
     thead
       tr
         td= "match Name"
-        td= "your opponent"
+        td= "player 1"
+        td= "player 2"
         td= "your points"
         td= "your opponents points"
         td= "location"
     each item in foundMatches
       tr
         td= item.name
+        td= item.player1
         td= item.player2
         td= item.player1Points
         td= item.player2Points
         td= item.location
+        a(class='button' href="/deleteMatchHistory/"+item._id) delete this history 

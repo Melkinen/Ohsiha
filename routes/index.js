@@ -80,21 +80,22 @@ function getDateNow (){
 
 router.post('/match',loggedIn, function(req,res,next){
     var today = getDateNow();
-    console.log(getDateNow);
-    var newMatch = {
-      name: "nameof Match",
-      player1: req.user.id,
+    console.log(getDateNow());
+    var newMatch =  new Match({
+      name: "name of Match",
+      player1: req.user.username,
       player2: req.body.opponentID,
       player1Points: req.body.Ownpoints,
       player2Points: req.body.opponentspoints,
       location: req.body.location,
       created_at: today,
       updated_at: today
-    };
+    });
+    console.log("newMAtch "+ newMatch);
       Match.create(newMatch, function (err) {
         console.log(err);
   });
-    res.status(201).redirect('/mainPage', {message: 'new Match was saved succesfully', user: req.user, title: 'MainPage' })
+    res.redirect('/mainPage', {message: 'new Match was saved succesfully', user: req.user, title: 'MainPage' })
 });
 
 router.get('/ownInformation',loggedIn, function(req, res, next){
@@ -103,11 +104,18 @@ router.get('/ownInformation',loggedIn, function(req, res, next){
   var foundUser = userQueries.getOneUserInformation(req,res,next)
 });
 
+router.put('/ownInformation', function(req,res,next){
+    console.log("put called")
+    userQueries.changeUserInformation(req,res,next);
+});
+
 router.get('/matchHistory',loggedIn, function(req, res, next){
   //here query the matches from DB that has the userID
   matchQueries.getUsersMatches(req,res,next);
-
-
+});
+router.delete('/matchHistory:ID',loggedIn, function(req, res, next){
+  //here query the matches from DB that has the userID
+  colsole.log("try to delete")
 });
 
 router.get('/login', function(req, res, next) {
@@ -115,6 +123,18 @@ router.get('/login', function(req, res, next) {
 });
 router.post('/login', passport.authenticate('local'), function(req, res, next) {
   res.redirect('/mainPage?userID='+req.user.id);
+});
+
+router.get('/deleteMatchHistory/:ID',loggedIn, function(req, res, next) {
+  res.render('deleteMatch', { title: 'Match deletion' });
+});
+
+router.delete('/match/:id',loggedIn, function(req, res, next) {
+  console.log(req.params.id);
+  Match.find({ _id:req.params.id }).remove().exec();
+  res.send("match removed ")
+
+
 });
 
 router.get('/logout', function(req, res) {

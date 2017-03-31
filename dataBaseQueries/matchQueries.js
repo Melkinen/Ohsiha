@@ -38,7 +38,7 @@ createNewMatch: function(req,res,next){
   });
 },
   getUsersMatches: function(req,res,next){
-    Match.find({player1: req.user.id}, function(err, matches) {
+    Match.find({$or:[{player1: req.user.username},{player2: req.user.username}]}, function(err, matches) {
       if (err) throw err;
       // object of all the users
       console.log(matches);

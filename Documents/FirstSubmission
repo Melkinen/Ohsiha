@@ -15,33 +15,37 @@ Valitsin teknologiaksi Node.js + Express + MongoDB. Node.js oli valintani, koska
 melko uusi teknologia, ja sitä käytetään laajasti. Minulla on myöskin meneillään toinen
 projekti, jossa käytetään Node.js:sää ja en halunnut opetella kahta eri teknologiaa samaan
 aikaan. View-enginenä on pug.
-Kehitn sovellusta omalla windows läppärilläni, mutta aion ehkä myöhemmin työntää sovelluksen Herokuun.
+Kehitän sovellusta omalla Windows läppärilläni, mutta aion ehkä myöhemmin työntää sovelluksen Herokuun.
 Asentaminen ensin Node ja sitten MongoDB, joidenka lataupaketit latasin selaimella netistä.
+https://nodejs.org/en/
+https://www.mongodb.com/
 Kirjastot Node- projektiin latasin NPM työkalun avulla. Komento NPM install {kirjastonnimi} -s
 lataa ja asentaa moduulin ja tallentaa sen  projektin omaan node_modulen kansioon ja lisää sen vielä package.json
 tiedostoon, josta sovellus osaa käyttää sitä. Toinen tapa asentaa, on kirjoittaa package.json
 tiedostoon dependencieslistaan kaikki modulit joita tarvitaan ja npm install asentaa ne.
 MongoDB asentuu helposti sen mukana tulevan asennusohjelman avulla. Ainoa säätö mikä tulee tehdä
 on valita kansio johon tietokannan data tallennetaan.
-Komento: mongod --dbpath {polku} käynnistää kannan ja laittaa sen tallentamaan ja käyttämään
-valittua kohdekansiota.
+Komento: mongod --dbpath {polku} käynnistää kannan ja laittaa sen käyttämään
+valittua kohdekansiota tallennukseen.
 Käytin express-generator kirjastoa projektin aloittamiseen. Express-generator muodosti kätevän tiedostorakenteen
 ja lisäsi package.json tiedostoon yleisesti tarvittavia moduuleita.
 Käytän projektin ajamiseen Nodemon kirjastoa, joka käynnistää palvelimen aina uudelleen, kun
 tiedostoihin on tullut muutoksia.
-Tulen luultavasti laittamaan palvelimeni ajoon heroku-ympäristöön. Teknologiat on valittu niin,
-että ne toimivat herokussa.
-Sain tietää express-generatorista ja nodemonista Mikaelin luentodemosta.
-käytin tutoriaalia -> https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
-mallina miten tietokantaa käytetään mongoose kirjaston avulla.
+
+Käytin tutoriaaleja: https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
+https://expressjs.com/en/guide/routing.html
+https://blog.risingstack.com/node-hero-tutorial-getting-started-with-node-js/
 
 Laitoin projektin githubiin: https://github.com/Melkinen/Ohsiha
 Tällä hetkellä aion tehdä sukapallotietokannan, johon rekisteröidytään ja lisätään historiaa pelatuista otteluista.
-Jos keksin jonkin kuningasidean niin teen projektista jotain muuta.
+Jos keksin jonkin muun kuningasidean niin teen projektista lopulta sitten jotain muuta.
 Helppoja asioita:
   - Tarvittavien kirjastojen ja ohjelmien asentaminen.
   - Tutorialeja oli netissä runsaasti, joten niitä seuraamalla saa jo paljon aikaan.
 
 Vaikeita asioita:
-  - Kaikki tarvittavat kirjastot tulee muistaa asentaa -s komennon avulla että ne lisätään package tiedostoon,
-  jos ne eivät ole siellä sovellus ei toimi.
+  - Kaikki tarvittavat kirjastot tulee muistaa asentaa -s komennon avulla että ne lisätään package tiedostoon dependenciesiin,
+  jos ne eivät ole siellä sovellus ei toimi kuten huomasin.
+  - tietokannan mallien suunnittelu
+
+#nodejs2017

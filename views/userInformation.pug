@@ -1,9 +1,12 @@
 extends layout
 block content
 
+
+
+
   p #{foundUser}
 
-  form(method='POST' action='')
+  form(method='PUT' action='/ownInformation')
     div.form-group
       label(for='name') Name:
       input#name.form-control(type='text', value = foundUser.name,  name='name')
@@ -12,11 +15,19 @@ block content
       input#username.form-control(type='text', value = foundUser.username,  name='username')
     div.form-group
       label(for='age') age:
-      input#username.form-control(type='number',  name='age')
+      input#age.form-control(type='number',  name='age' ,value = foundUser.meta.age)
+    div.form-group
+      label(for='hometown') hometown:
+      input#hometown.form-control(type='text',  name='hometown', value= foundUser.hometown)
     div.form-group
       label(for='password') password:
-      input#username.form-control(type='text',value = foundUser.password,  name='password')
+      input#password.form-control(type='text',value = foundUser.password,  name='password')
 
 
 
-    button.btn.btn-primary(type='submit') Change your information
+    button.btn.btn-primary(type='button', id = "Button1") Change your information
+
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+
+  script
+      include ../javascriptFunctions/userInformation.js

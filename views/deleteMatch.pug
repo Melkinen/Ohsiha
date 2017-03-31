@@ -1,0 +1,11 @@
+extends layout
+block content
+  H1
+    do you really want to delete this history
+  button(type='button' class=`btn btn-${btnType} btn-${btnSize}` id= "Button1")
+
+
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+
+  script
+      include ../javascriptFunctions/deleteMatch.js
