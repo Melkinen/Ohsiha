@@ -142,5 +142,10 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+router.post('/image', function(req, res) {
+    console.log("called add image")
+});
+
+
 
 module.exports = router;

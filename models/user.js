@@ -13,7 +13,8 @@ var UserSchema = new Schema({
   hometown: String,
   meta: {
     age: Number,
-    website: String
+    website: String,
+    image: String
   },
   created_at: Date,
   updated_at: Date

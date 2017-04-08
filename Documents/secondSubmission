@@ -1,0 +1,60 @@
+Toiseen välipalautukseen tein valmiiiksi kirjautumisen, rekisteröitymisen ja CRUD- operaatiot.
+Kirjautuminen tapahtuu mongoose ja passport kirjastojen avulla. Tietokannassa on
+dokumentti User joka pitää sisällään kaikki käyttäjän tiedot, kuten käyttäjätunnuksen ja salasanan.
+Salasana on tällä hetkellä vielä tallennettu salamaatttomana kantaan joten se tulee vielä muuttaa salatuksi.
+Kirjautuminen on tässä vaiheessa toteutettu vain LocalStrategyn avulla, mutta Passportin avulla myös kertakirjautumiset voidaan saada
+toimimaan.
+
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var passportLocalMongoose = require('passport-local-mongoose');
+
+// create a schema
+var UserSchema = new Schema({
+  name: String,
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  admin: Boolean,
+  hometown: String,
+  meta: {
+    age: Number,
+    website: String
+  },
+  created_at: Date,
+  updated_at: Date
+});
+
+//var User = mongoose.model('User', userSchema);
+
+UserSchema.plugin(passportLocalMongoose);
+module.exports = mongoose.model('User', UserSchema);
+
+Toinen dokumenttityyppi jota kannassa on pelihistoriadokumentti. Käyttäjät voivat tehdä uusia pelihistoria tietoja
+katsella omia tietoja ja poistaa dokumentteja. Poisto-operaatio ja käyttäjän tietojen muuttaminen
+on toteutettu Ajax-kirjaston avulla, HTTP PUT ja DELETE metodeja käyttäen, sillä esimerkiksi normaalista HTML
+formista ei voi lähettää PUT ja DELETE pyyntöjä.
+
+Uuden käyttäjän rekisteröinti:
+
+createNewUSer: function(req,res,next){
+      var day = HelpingFunctions.getDateNow();
+      console.log(req.body.username)
+      console.log(req.body.name)
+
+      User.register(new User({password :req.body.password, username : req.body.username, name: req.body.name, created_at: day}), req.body.password, function(err, account) {
+          if (err) {
+            console.log(err);
+              res.status(406).send(err);
+          }
+
+          passport.authenticate('local')(req, res, function () {
+              res.send('succes');
+          });
+      });
+  },
+
+Käyttöliittymässä on käytetty Bootsrapia, mutta tulos ei miellytä silmää vielä millään lailla.
+
+
+#nodejs2017

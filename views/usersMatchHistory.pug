@@ -1,6 +1,6 @@
 extends layout
 block content
-  table
+  table(id= "matchTable", class="table table-bordered")
     thead
       tr
         td= "match Name"
@@ -17,4 +17,5 @@ block content
         td= item.player1Points
         td= item.player2Points
         td= item.location
-        a(class='button' href="/deleteMatchHistory/"+item._id) delete this history 
+        td
+          a( href="/deleteMatchHistory/"+item._id) Delete this history
