@@ -29,20 +29,22 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cookieParser());
+/*
 app.use(require('express-session')({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+*/
+//app.use(passport.initialize());
+//app.use(passport.session());
+//app.use(express.static(path.join(__dirname, 'public')));
 
 // passport config
 var User = require('./models/user');
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+//passport.use(new LocalStrategy(User.authenticate()));
+//passport.serializeUser(User.serializeUser());
+//passport.deserializeUser(User.deserializeUser());
 
 
 //connect to dapabase

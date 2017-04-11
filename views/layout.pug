@@ -8,11 +8,14 @@ html
 
     title= title
 
+    script
+        include ../javascriptFunctions/getTokenCookie.js
+
   <!-- Main container of bootstrap all goes inside this-->
   body(class="container")
 
-    if (user)
-      p You are Logged In as: #{user.username}
+    if (username)
+      p You are Logged In as: #{username}
 
       <!-- Navigation bar-->
       ul(class="navBar")
@@ -20,10 +23,10 @@ html
         li
           a(href="/mainPage") Main Page
         li
-          a(href="/ownInformation/?user=" +user.username ) Look your own information
+          a(href="/ownInformation/?user=" +username +"?token=" +token ) Look your own information
 
         li
-          a(href="/matchHistory/?user=" +user.username ) Look your own match history
+          a(href="/matchHistory/?user=" +username ) Look your own match history
         li
           a(href="/findFriends" ) Find Friends
         li
@@ -35,5 +38,5 @@ html
     if (message)
       p(class='message')  #{message}
 
-    
+
     block content

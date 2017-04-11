@@ -53,10 +53,14 @@ function getNews(){
       var items = data.getElementsByTagName("item");
       console.log(items);
       for (item in items){
-        console.log(items[item].children[1].innerHTML);
+        console.log(item);
+        if (item == "length"){
+          return;
+        }
 
         var entry = document.createElement('li');
         var link = document.createElement('a');
+
         link.setAttribute('href', items[item].children[1].innerHTML);
         link.appendChild(document.createTextNode(items[item].children[0].innerHTML));
         entry.appendChild(link);
