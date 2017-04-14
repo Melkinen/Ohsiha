@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    <!-- Bootstrap-->
+    link(link rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    <!-- Other own stylesheet-->
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+    title= title
+
+    script
+        include ../javascriptFunctions/getTokenCookie.js
+
+  <!-- Main container of bootstrap all goes inside this-->
+  body(class="container")
+
+    
+  if (message)
+      p(class='message')  #{message}
+
+
+  block content

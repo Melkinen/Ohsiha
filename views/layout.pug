@@ -14,29 +14,29 @@ html
   <!-- Main container of bootstrap all goes inside this-->
   body(class="container")
 
-    if (username)
-      p You are Logged In as: #{username}
+      p(id = "usernameP")
 
       <!-- Navigation bar-->
-      ul(class="navBar")
+      ul(class="navBar" id= "nawBar")
 
         li
-          a(href="/mainPage") Main Page
+          a(href="/mainPage") Pääsivu
         li
-          a(href="/ownInformation/?user=" +username +"?token=" +token ) Look your own information
+          a(id ="informationLink",href="/ownInformation/?user=" ) Omat tiedot
+        li
+          a(id ="matchHistoryLink", href="/matchHistory/?user=" ) Omat pelihistoriat
+        li
+          a(id ="matchHistoryLink", href="/matches/") Kaikki pelihistoriat
+        li
+          a(href="/match") Kirjaa pelihistoria
+        li
+          a(href="/lane") Katso kaikki radat
+        li
+          a(href="/logout") Kirjaudu ulos
 
-        li
-          a(href="/matchHistory/?user=" +username ) Look your own match history
-        li
-          a(href="/findFriends" ) Find Friends
-        li
-          a(href="/match") Create new match history
-        li
-          a(href="/logout") Logout
 
-
-    if (message)
+  if (message)
       p(class='message')  #{message}
 
 
-    block content
+  block content

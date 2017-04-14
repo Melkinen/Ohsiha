@@ -2,7 +2,12 @@ var User = require('../models/user');
 var HelpingFunctions = require('../javascriptFunctions/helpingFunctions');
 var passport = require('passport');
 var mongoose = require('mongoose');
+var jwt  = require('jwt-simple');
+var config  = require('../config/database.js'); // get db config file
+var Match = require('../models/match');
 var userQueries ={
+
+
 
 createNewUSer: function(req,res,next){
       var day = HelpingFunctions.getDateNow();
@@ -20,34 +25,32 @@ createNewUSer: function(req,res,next){
           });
       });
   },
-  changeUserInformation: function(req,res,next){
-    console.log("change user information " + req.user);
-    User.findOne({username: req.user.username},function(err,foundUser){
-      if (!foundUser){
-        console.log("error user not dound")
-        return next(new Error('Could not load User'));
-      }
-      else{
-        console.log("user found "+ foundUser)
-          // Update each attribute with any possible attribute that may have been submitted in the body of the request
-        // If that attribute isn't in the request body, default back to whatever it was before.
-        console.log(req.body.name +  req.body.age +req.body.hometown);
-        foundUser.name = req.body.name;
-        foundUser.meta.age = req.body.age;
-        foundUser.updated_at = HelpingFunctions.getDateNow();
-        foundUser.hometown = req.body.hometown;
+  changeUserInformation: function(req,res,next,token){
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      username: decoded.username
+    }, function(err, user) {
+        if (err) throw err;
+        if (!user) {
+          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        } else {
 
-        console.log("here")
+        console.log("user found "+ user);
+        //console.log(req.body.name +  req.body.age +req.body.hometown);
+        user.name = req.body.name;
+        user.meta.age = req.body.age;
+        user.updated_at = HelpingFunctions.getDateNow();
+        user.hometown = req.body.hometown;
 
         // Save the updated document back to the database
-        foundUser.save(function (err, todo) {
+        user.save(function (err, todo) {
             if (err) {
                 console.log("error saving")
                 res.status(500).send(err)
             }
             res.send("User information saved");
         });
-      }
+        }
     });
   },
 
@@ -82,8 +85,26 @@ createNewUSer: function(req,res,next){
   });
 
 
-  }
+},
 
+getOneUsersMatchesBYToken : function (req,res,next,token){
+  var decoded = jwt.decode(token, config.secret);
+  User.findOne({
+    username: decoded.username
+  }, function(err, user) {
+      if (err) throw err;
+      if (!user) {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else {
+      console.log(user);
+      Match.find({$or:[{player1: user.username},{player2: user.username}]}, function(err, matches) {
+        if (err) throw err;
+        console.log(matches);
+        res.render('usersMatchHistory',{'user':user,'foundMatches': matches});
+        });
+      }
+  });
+}
 
 
 }

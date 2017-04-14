@@ -1,3 +1,19 @@
+/*
+<canvas id="can" width="400" height="400" style="border:2px solid;"></canvas>
+<div style="width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
+<div style="width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
+<div style="width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
+<div style="width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
+<div style="width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
+<div style="width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
+<div style="left:43%;">Eraser</div>
+<div style="width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+<img id="canvasimg" style=" style="display:none;">
+<input type="button" value="save" id="btn" size="30" onclick="save()" style="">
+<input type="button" value="clear" id="clr" size="23" onclick="erase()" style="">
+*/
+
+
 
 
     var canvas, ctx, flag = false,

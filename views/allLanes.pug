@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+  script
+    include ../javascriptFunctions/getAllLanes.js
+
+  h1
+    title
+
+  table(id= "laneTable", class="table table-sm")
+    thead(class="thead-inverse")
+      tr
+        td= "Radan nimi"
+        td= "paikka"
+        td= "väylien määrä"
+        td= "pinnanmuodot"
+        td= "linkki"

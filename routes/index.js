@@ -9,9 +9,11 @@ var Match = require('../models/match.js');
 var userQueries = require('../dataBaseQueries/userQueries')
 var matchQueries = require('../dataBaseQueries/matchQueries')
 var passport  = require('passport');
+var helpingFunctions = require('../javascriptFunctions/helpingFunctions')
+var request = require('request');
+var cheerio = require('cheerio');
+var fs = require('fs');
 require('../config/passport')(passport)
-//Now, this call won't fail because User has been added as a schema.
-//var User = mongoose.model(User);
 
 /* GET home page. */
 
@@ -44,43 +46,11 @@ router.post('/register', function(req, res) {
 }
 });
 
-
-
-/*
-    User.register(new User({password :req.body.password, username : req.body.username ,name: req.body.name, created_at: getDateNow()}), req.body.password, function(err, account) {
-        if (err) {
-          console.log(err);
-            return res.render('register', { account : account });
-        }
-
-        passport.authenticate('local')(req, res, function () {
-            res.redirect('/mainPage');
-        });
-    });
-});
-
-*/
-
-
-//this redirects to rigth site
-function checkIfUserIdsMatch(req,res,queryParamID){
-  if (req.user.id == queryParamID) {
-      console.log('right user logged in')
-    }
-      else{
-        res.redirect('/mainPage?userID='+req.user.id);
-      }
-}
-
-
 router.get('/mainPage',passport.authenticate('jwt', { session: false}),function(req, res, next) {
-  console.log(req.query.userID);
-  //this redirect to rigth site.
-  //checkIfUserIdsMatch(req,res,req.query.userID);
   res.render('mainPage', {user: req.user, title: 'MainPage' });
 });
 
-router.get('/match', function(req,res,next){
+router.get('/match',passport.authenticate('jwt', { session: false}), function(req,res,next){
   res.render('newMatch', {user: req.user, title: 'Match recording' });
 });
 
@@ -99,12 +69,12 @@ function getDateNow (){
   return returnDay;
 };
 
-router.post('/match', function(req,res,next){
+router.post('/match', passport.authenticate('jwt', { session: false}), function(req,res,next){
     var today = getDateNow();
-    console.log(getDateNow());
+    var username =  req.cookies['username'];
     var newMatch =  new Match({
-      name: "name of Match",
-      player1: req.user.username,
+      name: req.body.description,
+      player1: username,
       player2: req.body.opponentID,
       player1Points: req.body.Ownpoints,
       player2Points: req.body.opponentspoints,
@@ -116,7 +86,7 @@ router.post('/match', function(req,res,next){
       Match.create(newMatch, function (err) {
         console.log(err);
   });
-    res.redirect('/mainPage', {message: 'new Match was saved succesfully', user: req.user, title: 'MainPage' })
+    res.send("Success")
 });
 
 router.get('/ownInformation', passport.authenticate('jwt', { session: false}), function(req, res) {
@@ -132,7 +102,7 @@ router.get('/ownInformation', passport.authenticate('jwt', { session: false}), f
           return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
         } else {
 
-          res.render('userInformation', { "username":user.username,"name":user.name,"age":user.meta.age,"hometown":user.meta.hometown, "foundUser": user});
+          res.render('userInformation', { "username":user.username,"name":user.name,"age":user.meta.age,"hometown":user.hometown});
         }
     });
   } else {
@@ -140,26 +110,24 @@ router.get('/ownInformation', passport.authenticate('jwt', { session: false}), f
   }
 });
 
-/*
-router.get('/ownInformation', function(req, res, next){
-  //here query users information
-  //this also renders the userInformation view
-  var foundUser = userQueries.getOneUserInformation(req,res,next)
-});
-*/
-router.put('/ownInformation', function(req,res,next){
+
+router.put('/ownInformation',passport.authenticate('jwt', { session: false}), function(req,res,next){
     console.log("put called")
-    userQueries.changeUserInformation(req,res,next);
+    var token = req.cookies["token"];
+    userQueries.changeUserInformation(req,res,next,token);
 });
 
-router.get('/matchHistory', function(req, res, next){
+router.get('/matchHistory', passport.authenticate('jwt', { session: false}), function(req, res, next){
   //here query the matches from DB that has the userID
-  matchQueries.getUsersMatches(req,res,next);
+  var token = req.cookies['token'];
+  if (token) {
+  user = userQueries.getOneUsersMatchesBYToken(req,res,next,token);
+  }
+  else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
 });
-router.delete('/matchHistory:ID', function(req, res, next){
-  //here query the matches from DB that has the userID
-  colsole.log("try to delete")
-});
+
 
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Login' });
@@ -180,6 +148,7 @@ router.post('/login', function(req, res, next) {
           var token = jwt.encode(user, config.secret);
           // return the information including token as JSON
           res.cookie("token", token);
+          res.cookie("username", user.username);
           res.render('mainPage', {success: true, token: 'JWT ' + token, username :req.body.username});
 
         } else {
@@ -193,19 +162,22 @@ router.post('/login', function(req, res, next) {
 });
 
 
-router.get('/deleteMatchHistory/:ID', function(req, res, next) {
+router.get('/deleteMatchHistory/:ID',passport.authenticate('jwt', { session: false}) , function(req, res, next) {
   res.render('deleteMatch', { title: 'Match deletion' });
 });
 
-router.delete('/match/:id', function(req, res, next) {
+router.delete('/match/:id', passport.authenticate('jwt', { session: false}),function(req, res, next) {
   console.log(req.params.id);
   Match.find({ _id:req.params.id }).remove().exec();
   res.send("match removed ")
 
 
 });
+router.get('/matches',passport.authenticate('jwt', { session: false})  ,function(req, res,next) {
+    res.render("allMatches");
+});
 
-router.get('/logout', function(req, res) {
+router.get('/logout',  function(req, res) {
     res.clearCookie("token");
     res.redirect('/');
 });
@@ -213,6 +185,118 @@ router.get('/logout', function(req, res) {
 router.post('/image', function(req, res) {
     console.log("called add image")
 });
+
+router.get('/lane',  function(req, res) {
+
+    res.render("allLanes");
+});
+
+router.get('/lane/:laneName',  function(req, res) {
+    req.params.laneName
+    res.render("laneInfo");
+});
+
+
+router.get("/scraper",function(req,res){
+
+  url = 'http://frisbeegolfradat.fi/radat/tampere/';
+
+  request(url, function(error, response, html){
+    if(!error){
+      var $ = cheerio.load(html);
+      var links =[];
+
+    $('.rataCol').each(function(i, elem) {
+         links[i] = $(elem).find("a").attr("href");
+      });
+
+      //here are the links to each page that contains one track
+      fs.writeFileSync("./linksTampere.txt",links);
+
+
+    };
+
+    res.json(links);
+  })
+});
+
+var ALLLANES1
+router.get("/scrapeLines",function(req,res){
+
+  var links = fs.readFileSync("./links.txt","utf-8");
+  var links = links.split(",");
+  var allLanes = [];
+  for (i = 1 ; i <3; i++){
+    console.log(i);
+
+    request(links[i], function(error, response, html){
+      //console.log("started this")
+
+      //console.log(html);
+      var $ = cheerio.load(html);
+      //all the information that we need to make one trak object
+      //console.log($);
+      //console.log("this stuff" + $);
+      var vaylat = [];
+      var rataNimi = "radanNimi";
+      var vaylienMaara = 0;
+      var radanKuvaus = "ei kuvausta";
+      var pinnanMuodot = "ei kuvausta";
+      var osoite = "osoite"
+      //update the data if it is found
+      rataNimi = $(".course-heading").find("h1").text();
+      console.log("ratanimi; "+ rataNimi );
+
+      vaylienMaara = $(".course_info_left").eq(2).find("p").text();
+      radanKuvaus = $(".caption").find("p").text();
+      pinnanMuodot = $(".course_info_left").eq(3).find("p").text();
+      osoite =  $(".course_info_left").eq(0).find("p").text();
+      //console.log($);
+      //console.log(vaylienMaara);
+      //console.log("goin to vauyla")
+      $('.fairway').each(function(i, elem) {
+           vaylat[i] = $(elem).find("p").eq(0).text();
+           //console.log("vaylat:    " + vaylat[i]);
+        });
+
+      for (vayla in vaylat){
+          splittedVaylat = vaylat[vayla].split(" ");
+          ///(\r\n|\" ")/gm
+          var distance = splittedVaylat[1];
+          var par = splittedVaylat[4];
+          var vaylaObjekti = {};
+          vaylaObjekti.distance = distance;
+          vaylaObjekti.par = par;
+          vaylat[vayla] = vaylaObjekti;
+      }
+      //create the json object for one track
+
+      var rataObjekti = {};
+      rataObjekti.name = rataNimi;
+      rataObjekti.numberOfLanes = vaylienMaara;
+      rataObjekti.description = radanKuvaus.replace(/(\r\n|\n|\r|\t)/gm," ");
+      rataObjekti.topography = pinnanMuodot;
+      rataObjekti.lanes = vaylat;
+      rataObjekti.place = osoite.trim();
+      //console.log("rataobjecti: " +  JSON.stringify(rataObjekti));
+      allLanes.push(rataObjekti);
+      //console.log("all lanes!!!!!!!!!!!!!!!!:   "+  JSON.stringify(allLanes));
+      console.log("writing to file")
+      fs.appendFileSync("./allLines.txt", JSON.stringify(rataObjekti) + ",");
+
+    });
+
+
+  }
+  console.log("here"+ allLanes.length)
+
+  //now create a file containing all the tracks
+
+
+
+});
+
+
 
 
 

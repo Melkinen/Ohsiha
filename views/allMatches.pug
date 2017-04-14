@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+  script
+    include ../javascriptFunctions/getAllMatches.js
+
+  h1
+    title
+
+  table(id= "matchTable", class="table table-bordered")
+    thead
+      tr
+        td= "match Name"
+        td= "player 1"
+        td= "player 2"
+        td= "player1 Points"
+        td= "player 2Points"
+        td= "location"

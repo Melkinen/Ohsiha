@@ -1,13 +1,39 @@
+@charset "UTF-8";
+/* CSS Document */
 
-
-body  {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+h2 {
+	font-size: 45px;
 }
 
-a {
-  color: #00B7FF;
+h3 {
+	font-size: 40px;
 }
+
+h4 {
+	font-size: 40px;
+}
+
+
+body{
+	background: white;
+	color: black;
+}
+
+button{
+	color: chocolate;
+	padding: 10px;
+}
+
+.jumbotron{
+	color: chocolate;
+}
+
+td{
+	width: 200px;
+	font-size: 12px;
+}
+
+
 p.message{
   background-color: blue;
 }
@@ -15,9 +41,8 @@ ul.navBar li{
   padding-right: 20px;
   display: inline;
 }
-
-#matchTable,th,td{
-
-
-
+.form-control-inline {
+   width: 40px;
+   float:left;
+   margin-right: 0px;
 }

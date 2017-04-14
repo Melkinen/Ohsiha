@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose');
+var discGolfLane = require('../models/discGolfLane.js');
 var userQueries = require('../dataBaseQueries/userQueries')
 var matchQueries = require('../dataBaseQueries/matchQueries')
 const helpingFunctions = require("../javascriptFunctions/helpingFunctions")
@@ -23,6 +25,38 @@ router.get('/word', function(req, res, next) {
 router.get('/match', function(req, res, next) {
   matchQueries.getAllMatches(req,res,next);
 });
+
+
+
+router.get('/lane', function(req, res, next) {
+  find("discGolfLane",{},function(err, matches) {
+    console.log(matches);
+    res.send(matches);
+  });
+  return;
+});
+function find (collec, query, callback) {
+mongoose.connection.db.collection(collec, function (err, collection) {
+collection.find(query).toArray(callback);
+});
+}
+router.get('/lane/:laneName', function(req, res, next) {
+  console.log(req.params.laneName)
+  find("discGolfLane",{name: req.params.laneName},function(err, data) {
+    res.send(data);
+  });
+  return;
+});
+
+
+router.get('/lane/:nameOfLane', function(req, res, next) {
+  find("discGolfLane",{name: req.params.nameOfLane},function(err, matches) {
+    console.log(matches);
+    res.send(matches);
+  });
+  return;
+});
+
 router.get('/news', function(req, res, next) {
   var http = require('http');
   var options = {

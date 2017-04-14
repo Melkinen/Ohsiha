@@ -1,0 +1,98 @@
+Kolmas väipalautus!!!
+
+Tässä vaiheessa tuli lisätä ulkoista dataa sovellukseen, joten koitin hakea raapimistekniikalla dataa webistä suoraan html dokumenteista.
+Toteutin raapijan joka hakee tietoa frisbeegolfradoista.
+
+Ensin haetaan sivustolta lista sivuista. Request kirjaston avulla tehdään get pyyntöjä sivusteille ja cheerio kirjaston avulla voidaan lukea DOMia ja tallentaa sillä arvoja muuttujiin. Linkit tallennetaan linkit tiedostoon.
+
+router.get("/scraper",function(req,res){
+
+  url = 'http://frisbeegolfradat.fi/radat/tampere/';
+
+  request(url, function(error, response, html){
+    if(!error){
+      var $ = cheerio.load(html);
+      var links =[];
+
+    $('.rataCol').each(function(i, elem) {
+         links[i] = $(elem).find("a").attr("href");
+      });
+
+      //here are the links to each page that contains one track
+      fs.writeFileSync("./linksTampere.txt",links);
+
+
+    };
+
+    res.json(links);
+  })
+});
+
+
+Sitten tehdään hakupyynnöt jokaiselle sivustolle ja hetaan yksittäiseten ratojen tiedot.
+Tiedoista koostetaan JSON objekteja jotka tallennetaan listana tiedostoon.
+Tämän jälkeen listaus JSON objecteista voidaan syöttää sellaisenaan MongoDB:seen dokumenteiksi.
+
+router.get("/scrapeLines",function(req,res){
+
+  var links = fs.readFileSync("./links.txt","utf-8");
+  var links = links.split(",");
+  var allLanes = [];
+  for (i = 1 ; i <3; i++){
+    console.log(i);
+
+    request(links[i], function(error, response, html){
+
+      var $ = cheerio.load(html);
+      //all the information that we need to make one trak object
+      var vaylat = [];
+      var rataNimi = "radanNimi";
+      var vaylienMaara = 0;
+      var radanKuvaus = "ei kuvausta";
+      var pinnanMuodot = "ei kuvausta";
+      var osoite = "osoite"
+      //update the data if it is found
+      rataNimi = $(".course-heading").find("h1").text();
+      console.log("ratanimi; "+ rataNimi );
+      vaylienMaara = $(".course_info_left").eq(2).find("p").text();
+      radanKuvaus = $(".caption").find("p").text();
+      pinnanMuodot = $(".course_info_left").eq(3).find("p").text();
+      osoite =  $(".course_info_left").eq(0).find("p").text();
+
+      $('.fairway').each(function(i, elem) {
+           vaylat[i] = $(elem).find("p").eq(0).text();
+        });
+
+      for (vayla in vaylat){
+          splittedVaylat = vaylat[vayla].split(" ");
+          var distance = splittedVaylat[1];
+          var par = splittedVaylat[4];
+          var vaylaObjekti = {};
+          vaylaObjekti.distance = distance;
+          vaylaObjekti.par = par;
+          vaylat[vayla] = vaylaObjekti;
+      }
+      //create the json object for one track
+
+      var rataObjekti = {};
+      rataObjekti.name = rataNimi;
+      rataObjekti.numberOfLanes = vaylienMaara;
+      rataObjekti.description = radanKuvaus.replace(/(\r\n|\n|\r|\t)/gm," ");
+      rataObjekti.topography = pinnanMuodot;
+      rataObjekti.lanes = vaylat;
+      rataObjekti.place = osoite.trim();
+      //console.log("rataobjecti: " +  JSON.stringify(rataObjekti));
+      allLanes.push(rataObjekti);
+      console.log("writing to file")
+      fs.appendFileSync("./allLines.txt", JSON.stringify(rataObjekti) + ",");
+    });
+  }
+
+  Sitten tietoa radoista voidaan hakea REST rajapinnan läpi, ja näyttää käyttäjälle.
+
+  Vaikeaa:
+  - Raapija koska täytyi katsoa todella tarkkaan sivuston rakenne jolta tietoa haettiin
+  - Noden asykronisten kutsujen ajoitukset
+
+  Helppoa:
+  - tiedon lisääminen JSON tiedostosta kantaan.

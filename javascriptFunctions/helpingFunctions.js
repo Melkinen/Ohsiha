@@ -16,6 +16,13 @@ getDateNow : function (){
   return returnDay;
 },
 
+getCookie: function (name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+},
+
+
 getOneRandomWord: function(req,res,next){
   fs.readFile("./sanalista.txt", "utf8",function(err,file){
     if (err){
