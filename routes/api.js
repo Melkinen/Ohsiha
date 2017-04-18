@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var discGolfLane = require('../models/discGolfLane.js');
 var userQueries = require('../dataBaseQueries/userQueries')
 var matchQueries = require('../dataBaseQueries/matchQueries')
+var discGolfHistory = require('../models/discGolfHistory.js');
 const helpingFunctions = require("../javascriptFunctions/helpingFunctions")
 
 
@@ -40,13 +41,6 @@ mongoose.connection.db.collection(collec, function (err, collection) {
 collection.find(query).toArray(callback);
 });
 }
-router.get('/lane/:laneName', function(req, res, next) {
-  console.log(req.params.laneName)
-  find("discGolfLane",{name: req.params.laneName},function(err, data) {
-    res.send(data);
-  });
-  return;
-});
 
 
 router.get('/lane/:nameOfLane', function(req, res, next) {
@@ -56,6 +50,29 @@ router.get('/lane/:nameOfLane', function(req, res, next) {
   });
   return;
 });
+
+router.post('/lane/:nameOfLane', function(req, res, next) {
+    var date = helpingFunctions.getDateNow()
+    var username =  req.cookies['username'];
+    var newHistory =  new discGolfHistory({
+      description: req.body.description,
+      nameOfTrack: req.params.nameOfLane,
+      player1: username,
+      created_at: date,
+      updated_at: date,
+      laneResults: []
+    });
+    i = 0;
+    for (var key in req.body) {
+        if (key == "description"){continue;}
+        newHistory.laneResults[i] = req.body[key]
+        i++;
+      }
+    console.log(newHistory);
+    newHistory.save();
+    res.render("mainPage",{message:"history saved"})
+});
+  router.get('/laneHistory/:nameOfLane')
 
 router.get('/news', function(req, res, next) {
   var http = require('http');

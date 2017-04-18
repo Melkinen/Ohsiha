@@ -38,7 +38,7 @@ function getLane(){
         cell5.innerHTML = data[item].description;
         table2 =  document.getElementById("laneTable2");
         var row2 = table2.insertRow(table.lenght);
-        createForm(lanes);
+        createForm(lanes, data[item].name,data[item].name);
 
         for (lane in data[item].lanes){
           var taulukko = document.createElement('table');
@@ -64,14 +64,14 @@ function getLane(){
 
 };
 
-  function createForm(lanes){
+  function createForm(lanes,url, nameOfTrack){
 
     console.log("crating form");
     //var f = document.createElement("form")
     var f = document.getElementById('form1')
     //$( ".formPlace" ).append( f );
     f.setAttribute('method',"POST");
-    f.setAttribute('action',"URL");
+    f.setAttribute('action',"/api/lane/"+url);
 
 
     for (i = 0; i <lanes; i++){
@@ -84,14 +84,12 @@ function getLane(){
       f.appendChild(input);
 
     }
-    var input = document.createElement("input"); //input element, text
+    var input2 = document.createElement("input"); //input element, text
     input.setAttribute('type',"text");
     input.setAttribute('name',"description");
     input.setAttribute('id',"description");
     input.setAttribute("class"," form-control")
-
-    f.appendChild(input);
-
+    f.appendChild(input2);
 
     var s = document.createElement("input"); //input element, Submit button
     s.setAttribute('type',"submit");

@@ -196,7 +196,7 @@ router.get('/lane/:laneName',  function(req, res) {
     res.render("laneInfo");
 });
 
-
+/*
 router.get("/scraper",function(req,res){
 
   url = 'http://frisbeegolfradat.fi/radat/tampere/';
@@ -221,83 +221,84 @@ router.get("/scraper",function(req,res){
 });
 
 var ALLLANES1
+
 router.get("/scrapeLines",function(req,res){
 
   var links = fs.readFileSync("./links.txt","utf-8");
   var links = links.split(",");
   var allLanes = [];
-  for (i = 1 ; i <3; i++){
-    console.log(i);
-
-    request(links[i], function(error, response, html){
-      //console.log("started this")
-
-      //console.log(html);
-      var $ = cheerio.load(html);
-      //all the information that we need to make one trak object
-      //console.log($);
-      //console.log("this stuff" + $);
-      var vaylat = [];
-      var rataNimi = "radanNimi";
-      var vaylienMaara = 0;
-      var radanKuvaus = "ei kuvausta";
-      var pinnanMuodot = "ei kuvausta";
-      var osoite = "osoite"
-      //update the data if it is found
-      rataNimi = $(".course-heading").find("h1").text();
-      console.log("ratanimi; "+ rataNimi );
-
-      vaylienMaara = $(".course_info_left").eq(2).find("p").text();
-      radanKuvaus = $(".caption").find("p").text();
-      pinnanMuodot = $(".course_info_left").eq(3).find("p").text();
-      osoite =  $(".course_info_left").eq(0).find("p").text();
-      //console.log($);
-      //console.log(vaylienMaara);
-      //console.log("goin to vauyla")
-      $('.fairway').each(function(i, elem) {
-           vaylat[i] = $(elem).find("p").eq(0).text();
-           //console.log("vaylat:    " + vaylat[i]);
-        });
-
-      for (vayla in vaylat){
-          splittedVaylat = vaylat[vayla].split(" ");
-          ///(\r\n|\" ")/gm
-          var distance = splittedVaylat[1];
-          var par = splittedVaylat[4];
-          var vaylaObjekti = {};
-          vaylaObjekti.distance = distance;
-          vaylaObjekti.par = par;
-          vaylat[vayla] = vaylaObjekti;
-      }
-      //create the json object for one track
-
-      var rataObjekti = {};
-      rataObjekti.name = rataNimi;
-      rataObjekti.numberOfLanes = vaylienMaara;
-      rataObjekti.description = radanKuvaus.replace(/(\r\n|\n|\r|\t)/gm," ");
-      rataObjekti.topography = pinnanMuodot;
-      rataObjekti.lanes = vaylat;
-      rataObjekti.place = osoite.trim();
-      //console.log("rataobjecti: " +  JSON.stringify(rataObjekti));
-      allLanes.push(rataObjekti);
-      //console.log("all lanes!!!!!!!!!!!!!!!!:   "+  JSON.stringify(allLanes));
-      console.log("writing to file")
-      fs.appendFileSync("./allLines.txt", JSON.stringify(rataObjekti) + ",");
-
-    });
-
-
-  }
-  console.log("here"+ allLanes.length)
-
-  //now create a file containing all the tracks
+  scrapeOneLink(links, 0);
 
 
 
 });
 
 
+function scrapeOneLink(links, index){
+  if (index >= links.length){
+    console.log("lopeta rekursio" + index);
+    return;
+  }
+  console.log("Index: " + index);
 
+  request(links[index], function(error, response, html){
+    //console.log("started this")
 
+    //console.log(html);
+    var $ = cheerio.load(html);
+    //all the information that we need to make one trak object
+    //console.log($);
+    //console.log("this stuff" + $);
+    var vaylat = [];
+    var rataNimi = "radanNimi";
+    var vaylienMaara = 0;
+    var radanKuvaus = "ei kuvausta";
+    var pinnanMuodot = "ei kuvausta";
+    var osoite = "osoite"
+    //update the data if it is found
+    rataNimi = $(".course-heading").find("h1").text();
+    console.log("ratanimi; "+ rataNimi );
 
+    vaylienMaara = $(".course_info_left").eq(2).find("p").text();
+    radanKuvaus = $(".caption").find("p").text();
+    pinnanMuodot = $(".course_info_left").eq(3).find("p").text();
+    osoite =  $(".course_info_left").eq(0).find("p").text();
+    //console.log($);
+    //console.log(vaylienMaara);
+    //console.log("goin to vauyla")
+    $('.fairway').each(function(i, elem) {
+         vaylat[i] = $(elem).find("p").eq(0).text();
+         //console.log("vaylat:    " + vaylat[i]);
+      });
+
+    for (vayla in vaylat){
+        splittedVaylat = vaylat[vayla].split(" ");
+        ///(\r\n|\" ")/gm
+        var distance = splittedVaylat[1];
+        var par = splittedVaylat[4];
+        var vaylaObjekti = {};
+        vaylaObjekti.distance = distance;
+        vaylaObjekti.par = par;
+        vaylat[vayla] = vaylaObjekti;
+    }
+    //create the json object for one track
+
+    var rataObjekti = {};
+    rataObjekti.name = rataNimi;
+    rataObjekti.numberOfLanes = vaylienMaara;
+    rataObjekti.description = radanKuvaus.replace(/(\r\n|\n|\r|\t)/gm," ");
+    rataObjekti.topography = pinnanMuodot;
+    rataObjekti.lanes = vaylat;
+    rataObjekti.place = osoite.trim();
+    //console.log("rataobjecti: " +  JSON.stringify(rataObjekti));
+
+    //console.log("all lanes!!!!!!!!!!!!!!!!:   "+  JSON.stringify(allLanes));
+    console.log("writing to file")
+    fs.appendFileSync("./allLines.txt", JSON.stringify(rataObjekti) + ",");
+    index = index + 1;
+    scrapeOneLink(links, index);
+
+  });
+}
+*/
 module.exports = router;
