@@ -1,5 +1,13 @@
 extends layout
+
 block content
+
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+
+
+
+
+
   table(id= "matchTable", class="table table-bordered")
     thead
       tr
@@ -19,3 +27,19 @@ block content
         td= item.location
         td
           a( href="/deleteMatchHistory/"+item._id) Delete this history
+  table(id= "historyTable", class="table table-bordered")
+    thead
+      tr
+        td= "Radan nimi"
+        td= "Kuvaus"
+        td= "historia tallennettu"
+        td= "your points"
+
+  div(id="container" style="min-width: 310px; height: 400px; margin: 0 auto")
+
+
+  script(src="https://code.highcharts.com/highcharts.js")
+  script(src="https://code.highcharts.com/modules/exporting.js")
+  script
+    include ../javascriptFunctions/getOwnLaneHistory.js
+    include ../javascriptFunctions/chartDrawer.js

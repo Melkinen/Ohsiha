@@ -36,6 +36,7 @@ router.get('/lane', function(req, res, next) {
   });
   return;
 });
+
 function find (collec, query, callback) {
 mongoose.connection.db.collection(collec, function (err, collection) {
 collection.find(query).toArray(callback);
@@ -72,32 +73,51 @@ router.post('/lane/:nameOfLane', function(req, res, next) {
     newHistory.save();
     res.render("mainPage",{message:"history saved"})
 });
-  router.get('/laneHistory/:nameOfLane')
 
-router.get('/news', function(req, res, next) {
-  var http = require('http');
-  var options = {
-  host: 'www.mtv.fi',
-  path: '/api/feed/rss/uutiset_uusimmat'
-};
-var req = http.get(options, function(res) {
-console.log('STATUS: ' + res.statusCode);
-console.log('HEADERS: ' + JSON.stringify(res.headers));
-
-// Buffer the body entirely for processing as a whole.
-var bodyChunks = [];
-res.on('data', function(chunk) {
-  // You can process streamed parts here...
-  bodyChunks.push(chunk);
-}).on('end', function() {
-  var body = Buffer.concat(bodyChunks);
-  //console.log('BODY: ' + body);
-  //res.send(body);
-  // ...and/or process the entire body here.
-})
-});
+router.get('/UserslaneHistory/:numberOfHistories',function(req, res, next) {
+  //db.foo.find().sort({_id:1}).limit(50);
+  console.log("called userslane historiew")
+  console.log(req.cookies['username'])
+  //.limit(ParseInt(req.params.numberOfHistories));
+  var query = discGolfHistory.find({player1: req.cookies['username']}).limit(parseInt(req.params.numberOfHistories));
+  console.log("query"+ query)
+  query.exec(function(err, histories) {
+    console.log(histories)
+    res.send(histories)
+  });
 });
 
+router.get('/UserslaneHistory/:numberOfHistories/:lane',function(req, res, next) {
+  //db.foo.find().sort({_id:1}).limit(50);
+  console.log("called userslane lae")
+  console.log(req.cookies['username'])
+  console.log(req.params.lane)
+
+  //.limit(ParseInt(req.params.numberOfHistories));
+  var query = discGolfHistory.find({player1: req.cookies['username'],nameOfTrack: req.params.lane }).limit(parseInt(req.params.numberOfHistories));
+  console.log("query"+ query)
+  query.exec(function(err, histories) {
+    console.log(histories)
+    res.send(histories)
+  });
+});
+
+router.get('/laneHistory/',function(req, res, next) {
+  discGolfHistory.find({},function(err, histories) {
+    res.send(histories);
+  });
+});
+router.get('/laneHistory/:nameOfLane',function(req, res, next) {
+  discGolfHistory.find({nameOfTrack: req.params.nameOfLane},function(err, histories) {
+    res.send(histories);
+  });
+});
+
+router.get('/UserslaneHistory/:nameOfLane',function(req, res, next) {
+  discGolfHistory.find({player1: req.cookies['username'], nameOfTrack: req.params.nameOfLane},function(err, histories) {
+    res.send(histories);
+  });
+});
 
 
 

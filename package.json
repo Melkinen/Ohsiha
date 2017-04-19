@@ -15,6 +15,7 @@
     "debug": "~2.6.0",
     "express": "~4.14.1",
     "express-session": "^1.10.1",
+    "highcharts": "^5.0.10",
     "jodel-api": "^1.0.3",
     "jwt-simple": "^0.3.1",
     "morgan": "~1.7.0",

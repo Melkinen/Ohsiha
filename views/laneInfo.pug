@@ -1,9 +1,7 @@
 extends layout
 
 block content
-  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
-  script
-    include ../javascriptFunctions/getOneLineInformation.js
+
 
   h1
     title
@@ -21,3 +19,14 @@ block content
   p
     Kirjoita oma tuloksesi alle väylittäin:
   form(id="form1" , role="form")
+
+  div(id="container" style="min-width: 250px; height: 400px; margin: 0 auto")
+
+  div(id="container2")
+
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+  script(src="https://code.highcharts.com/highcharts.js")
+  script(src="https://code.highcharts.com/modules/exporting.js")
+
+  script
+    include ../javascriptFunctions/getOneLineInformation.js
