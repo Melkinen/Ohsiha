@@ -6,13 +6,18 @@ getDateNow : function (){
   var dd = today.getDate();
   var mm = today.getMonth()+1; //January is 0!
   var yyyy = today.getFullYear();
+  var hh = today.getHours();
+  var min = today.getMinutes();
   if(dd<10) {
       dd='0'+dd
   }
   if(mm<10) {
       mm='0'+mm
   }
-  var returnDay = mm+'-'+dd+'-'+yyyy;
+  //2017-04-18T21:00:00.000Z
+  //"2014-02-10T10:50:42.389Z"
+  var returnDay = yyyy+ "-"+mm+"-"+dd+"T"+hh+":"+min+":"+"00.000Z";
+  //var returnDay = min+ '-'+ hh + '-' + mm+'-'+dd+'-'+yyyy;
   return returnDay;
 },
 
