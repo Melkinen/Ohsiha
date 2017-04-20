@@ -22,7 +22,7 @@ function getMatches(){
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
         var cell7 = row.insertCell(6);
-        cell1.innerHTML = data[item].name;
+
         cell2.innerHTML = data[item].place;
         cell3.innerHTML = data[item].numberOfLanes;
         cell4.innerHTML = data[item].topography;
@@ -31,8 +31,8 @@ function getMatches(){
         link.href = "/lane/" + data[item].name;
         link.text = data[item].name;
 
-
-        cell7.appendChild(link);
+        cell1.appendChild(link);
+        
 
         var taulukko = document.createElement('table');
         taulukko.id = "vaylaTaulukko"

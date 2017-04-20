@@ -93,7 +93,7 @@ function doChart(data){
     Highcharts.chart('container2', {
 
     title: {
-        text: 'Yhteistulokset radalta ' + nameOfTrack
+        text: 'Yhteistuloksesi radalta: ' + nameOfTrack
     },
 
     subtitle: {
@@ -203,7 +203,7 @@ function getLane(){
     f.setAttribute('action',"/api/lane/"+url);
 
 
-    for (i = 0; i <lanes; i++){
+    for (i = 0; i <=lanes; i++){
 
       var input = document.createElement("input"); //input element, text
       input.setAttribute('type',"number");

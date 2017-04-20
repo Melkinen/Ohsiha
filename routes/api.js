@@ -119,6 +119,15 @@ router.get('/UserslaneHistory/:nameOfLane',function(req, res, next) {
   });
 });
 
+router.delete('/laneHistory/:historyID',function(req,res,nex){
+  console.log("delete history")
+  discGolfHistory.findOne({_id: req.params.historyID},function(err, history){
+      history.remove();
+  });
+});
+
+
+
 
 
 module.exports = router;
