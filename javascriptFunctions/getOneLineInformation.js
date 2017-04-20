@@ -209,7 +209,7 @@ function getLane(){
       input.setAttribute('type',"number");
       input.setAttribute('name',"lane"+i);
       input.setAttribute('id',"laneInput"+i);
-      input.setAttribute("class"," form-control-inline")
+      input.setAttribute("class"," form-control-inline");
       f.appendChild(input);
 
     }
@@ -217,8 +217,8 @@ function getLane(){
     input.setAttribute('type',"text");
     input.setAttribute('name',"description");
     input.setAttribute('id',"description");
-    input.setAttribute("class"," form-control")
-    input.setAttribute("placeholder","Kuvaus suorituksesta ")
+    input.setAttribute("class"," form-control");
+    input.setAttribute("placeholder","Kuvaus suorituksesta ");
     f.appendChild(input2);
 
     var s = document.createElement("input"); //input element, Submit button

@@ -7,26 +7,26 @@ block content
 
 
 
-
-  table(id= "matchTable", class="table table-bordered")
-    thead
-      tr
-        td= "match Name"
-        td= "player 1"
-        td= "player 2"
-        td= "your points"
-        td= "your opponents points"
-        td= "location"
-    each item in foundMatches
-      tr
-        td= item.name
-        td= item.player1
-        td= item.player2
-        td= item.player1Points
-        td= item.player2Points
-        td= item.location
-        td
-          a( href="/deleteMatchHistory/"+item._id) Delete this history
+  div(id="sulkapalloDiv" visibility: hidden)
+    table(id= "matchTable", class="table table-bordered")
+      thead
+        tr
+          td= "match Name"
+          td= "player 1"
+          td= "player 2"
+          td= "your points"
+          td= "your opponents points"
+          td= "location"
+      each item in foundMatches
+        tr
+          td= item.name
+          td= item.player1
+          td= item.player2
+          td= item.player1Points
+          td= item.player2Points
+          td= item.location
+          td
+            a( href="/deleteMatchHistory/"+item._id) Delete this history
   table(id= "historyTable", class="table table-bordered")
     thead
       tr
