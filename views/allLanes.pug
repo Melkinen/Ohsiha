@@ -2,8 +2,7 @@ extends layout
 
 block content
   script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
-  script
-    include ../javascriptFunctions/getAllLanes.js
+
 
   h1
     title
@@ -15,3 +14,5 @@ block content
         td= "Paikka"
         td= "Väylien määrä"
         td= "Pinnanmuodot"
+    script
+      include ../javascriptFunctions/getAllLanes.js
