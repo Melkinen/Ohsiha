@@ -10,9 +10,14 @@ html
 
     script
         include ../javascriptFunctions/getTokenCookie.js
+        include ../javascriptFunctions/changeColor.js
 
   <!-- Main container of bootstrap all goes inside this-->
-  body(class="container")
+  body(class="container" id= "bigContainer1" onload="setColor()" )
+
+      input(id= "colorPicker" type="color")
+      <button id= "colorPickerButton" onclick="changeColor()" type="button">vaihdataustaväriä</button>
+      
 
       p(id = "usernameP")
 

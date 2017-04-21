@@ -3,9 +3,18 @@ document.onload(getMatches());
 function createTableForAllLanes(data){
 
   var table = document.getElementById("laneTable");
+  //var nimilista = document.getElementById("nimilista");
+
+
 
   for (item in data){
-    //console.log(data[item]);
+    /*
+    var option = document.createElement("option");
+    option.text = data[item].name;
+    option.value = data[item].name;
+
+    nimilista.appendChild(option);
+    */
     var row = table.insertRow(table.lenght);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
@@ -40,25 +49,24 @@ function createTableForAllLanes(data){
     cell6.appendChild(taulukko);
     cell6.style="display:none";
     cell5.style="display:none";
-
-
   }
 }
 
 function getMatches(){
   if (localStorage.allLanes != undefined){
     createTableForAllLanes(JSON.parse(localStorage.allLanes));
+
+
     return;
   }
   console.log(" no storge data -> need to get");
   $.ajax({
-
     url: "/api/lane",
     success: function(data) {
         localStorage.allLanes = JSON.stringify(data);
+
         createTableForAllLanes(data);
     }
-
   });
 
 }
