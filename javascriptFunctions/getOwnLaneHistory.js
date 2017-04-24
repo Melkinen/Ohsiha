@@ -70,7 +70,13 @@ function getMatches(){
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
         cell2.innerHTML = data[item].description;
-        cell3.innerHTML = data[item].created_at;
+        var time = data[item].created_at.substring(0,16)
+        var year = time.substring(0,4);
+        var month = time.substring(5,7);
+        var day = time.substring(8,10);
+        var clock = time.substring(11,16);
+
+        cell3.innerHTML = day + "."+ month +"."+ year + " klo: " +clock;
         cell4.innerHTML = data[item].laneResults;
 
         var link= document.createElement('a');
