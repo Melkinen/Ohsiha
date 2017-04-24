@@ -7,16 +7,16 @@ block content
   //register form
   form(method='POST' action='/register')
     div.form-group
-      label(for='name') Name:
-      input#name.form-control(type='text', placeholder='first and last' name='name')
+      label(for='name') Nimi:
+      input#name.form-control(type='text', placeholder='Sinun ei tarvistse laittaa oikeaa nimeäsi...' name='name')
     div.form-group
-      label(for='username') username:
-      input#username.form-control(type='text', placeholder='CoolNick' name='username')
+      label(for='username') Käyttäjänimi:
+      input#username.form-control(type='text', placeholder='Hauska käyttäjätunnus' name='username')
 
     div.form-group
-      label(for='pw') Password:
+      label(for='pw') Salasana:
       input#pw.form-control(type='password' name='password')
     div.form-group
-      label(for='pw2') Confirm Password:
+      label(for='pw2') Vahvista salasana:
       input#pw2.form-control(type='password' name='confirmPassword')
-    button.btn.btn-primary(type='submit') Sign up
+    button.btn.btn-primary(type='submit') Rekisteröidy

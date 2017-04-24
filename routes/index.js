@@ -19,10 +19,10 @@ require('../config/passport')(passport)
 
 router.get('/', function(req, res, next) {
   console.log('called /');
-  res.render('index', {user:req.user, title: 'Sulkapallo Järjestelmä' });
+  res.render('index', {user:req.user, title: 'Frisbeegolffi aplikaatio' });
 });
 router.get('/register', function(req, res, next) {
-  res.render('register', { title: 'Registeration' });
+  res.render('register', { title: 'Rekisteröityminen' });
 });
 router.post('/register', function(req, res) {
 
