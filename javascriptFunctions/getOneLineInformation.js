@@ -139,8 +139,8 @@ function getLane(){
   console.log("getting");
   var url = document.URL;
   console.log(url);
-  var name = url.substring(27, url.lenght);
-  console.log(url.substring(27, url.lenght));
+  var urlArray = url.split("/");
+  var name = urlArray.pop();
   var lanes = 0;
 
   $.ajax({
@@ -152,11 +152,13 @@ function getLane(){
       for (item in data){
         console.log(data[item]);
         var row = table.insertRow(table.lenght);
+        var row2 = table.insertRow(table.lenght);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
+        var cell5 = row2.insertCell(0);
+        cell5.colSpan = 4
         cell1.innerHTML = data[item].name;
         cell2.innerHTML = data[item].place;
         cell1.id = "nameOfTrack";

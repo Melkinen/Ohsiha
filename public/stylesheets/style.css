@@ -46,3 +46,11 @@ ul.navBar li{
    float:left;
    margin-right: 0px;
 }
+
+#laneTable{
+	font-size:1px;
+}
+
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}

@@ -6,16 +6,26 @@ block content
 
   h1
     title
-  
 
-  </datalist>
 
-  table(id= "laneTable", class="table table-sm")
+
+      <input type="submit">
+    </form>
+
+
+
+
+  <form action="/lane/" method="get" id="nimenHakuFormi">
+    <input id="inputRadanNimelle" list="nimilista" name="lane" oninput= "dataListSubmit ()">
+    <datalist id="nimilista"> </datalist>
+    <input type="submit" value="hae radan nimellä">
+  </form>
+
+  table(id= "laneTable", class="table table-sm" style="font-size:100px;")
     thead(class="thead-inverse")
       tr
         td= "Rata"
         td= "Paikka"
-        td= "Väylien määrä"
-        td= "Pinnanmuodot"
+
     script
       include ../javascriptFunctions/getAllLanes.js

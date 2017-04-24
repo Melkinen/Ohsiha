@@ -22,7 +22,7 @@ html
     <header>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
-        <div class="navbar-header">
+          <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -31,10 +31,10 @@ html
           </div>
 
           <div class="brand-centered">
-          <a class="navbar-brand" ><img style="margin-right: 10px; padding: 0;" src="images/confidexLogo.png">
+          <a class="navbar-brand" ><img style="margin-right: 10px; padding: 0;" src="/images/naama.png">
           </a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
 
           <ul class="nav navbar-nav ">
 
@@ -50,28 +50,31 @@ html
                     a(href="/logout") Kirjaudu ulos
 
           </ul>
-        </div>
+          </div>
       </div>
     </nav>
     </header>
 
   <!-- Main container of bootstrap all goes inside this-->
   body( onload="setColor()" )
-      div(class="container" id= "bigContainer1")
-          input(id= "colorPicker" type="color")
-          <button id= "colorPickerButton" onclick="changeColor()" type="button">vaihdataustaväriä</button>
 
+
+          if (message)
+              p(class='message')  #{message}
 
           p(id = "usernameP")
 
 
 
-  if (message)
-      p(class='message')  #{message}
 
-  <footer class="container-fluid text-center">
-    <p>&copy; 2017 Frisbeegolf sovellus</p>
-  </footer>
+
 
 
   block content
+
+  div(class="container" id= "bigContainer1")
+      input(id= "colorPicker" type="color")
+      <button id= "colorPickerButton" onclick="changeColor()" type="button">vaihdataustaväriä</button>
+  <footer class="container-fluid text-center">
+    <p>&copy; 2017 Frisbeegolf sovellus</p>
+  </footer>
