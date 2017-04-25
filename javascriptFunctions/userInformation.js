@@ -14,7 +14,7 @@ function sendPutRequest(){
   var hometown = document.getElementById("hometown").value;
   var age = document.getElementById("age").value;
   $.ajax({
-    url: '/ownInformation',
+    url: '/api/ownInformation',
     type: 'PUT',
     data:  "name="+name+"&hometown="+hometown+"&age="+age,
     success: function(data) {

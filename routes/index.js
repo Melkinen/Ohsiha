@@ -24,27 +24,7 @@ router.get('/', function(req, res, next) {
 router.get('/register', function(req, res, next) {
   res.render('register', { title: 'Rekisteröityminen' });
 });
-router.post('/register', function(req, res) {
 
-  if (!req.body.name || !req.body.password) {
-  res.json({success: false, msg: 'Please pass name and password.'});
-} else {
-  var newUser = new User({
-    username: req.body.username,
-    password: req.body.password,
-    name: req.body.name,
-    created_at: getDateNow()
-  });
-  // save the user
-  newUser.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.json({success: false, msg: 'Username already exists.'});
-    }
-    res.json({success: true, msg: 'Successful created new user.'});
-  });
-}
-});
 
 router.get('/mainPage',passport.authenticate('jwt', { session: false}),function(req, res, next) {
   res.render('mainPage', {user: req.user, title: 'MainPage' });
@@ -111,11 +91,7 @@ router.get('/ownInformation', passport.authenticate('jwt', { session: false}), f
 });
 
 
-router.put('/ownInformation',passport.authenticate('jwt', { session: false}), function(req,res,next){
-    console.log("put called")
-    var token = req.cookies["token"];
-    userQueries.changeUserInformation(req,res,next,token);
-});
+
 
 router.get('/matchHistory', passport.authenticate('jwt', { session: false}), function(req, res, next){
   //here query the matches from DB that has the userID

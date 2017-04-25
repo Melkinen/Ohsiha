@@ -19,6 +19,39 @@ router.post('/user',passport.authenticate('jwt', { session: false}), function(re
 router.get('/user',passport.authenticate('jwt', { session: false}), function(req, res, next) {
   userQueries.getAllUsers(req,res,next);
 });
+
+router.post('/register', function(req, res) {
+  console.log(req.body);
+  if (!req.body.name || !req.body.password || !req.body.confirmPassword) {
+  res.json({success: false, msg: 'Kirjoita nimi käyttäjätunnus salasana ja salasanan vahvistus.'});
+}if (req.body.password != req.body.confirmPassword){
+  res.json({success: false, msg: 'Salasanat eivät täsmää.'});
+}
+
+else {
+  var newUser = new User({
+    username: req.body.username,
+    password: req.body.password,
+    name: req.body.name,
+    created_at: helpingFunctions.getDateNow()
+  });
+  // save the user
+  newUser.save(function(err) {
+    if (err) {
+      console.log(err);
+      return res.json({success: false, msg: 'Käyttäjätunnus on jo käytössä.'});
+    }
+    res.json({success: true, msg: 'Käyttäjätunnuksen luonti onnistui.'});
+  });
+}
+});
+
+router.put('/ownInformation',passport.authenticate('jwt', { session: false}), function(req,res,next){
+    console.log("put called")
+    var token = req.cookies["token"];
+    userQueries.changeUserInformation(req,res,next,token);
+});
+
 router.get('/user/:userID',passport.authenticate('jwt', { session: false}), function(req, res, next) {
   var userID = req.params.userID;
   req.params.userID = userID;
@@ -31,11 +64,8 @@ router.get('/match',passport.authenticate('jwt', { session: false}), function(re
   matchQueries.getAllMatches(req,res,next);
 });
 
-
-
 router.get('/lane',passport.authenticate('jwt', { session: false}), function(req, res, next) {
   find("discGolfLane",{},function(err, matches) {
-    console.log(matches);
     res.send(matches);
   });
   return;
@@ -50,7 +80,6 @@ collection.find(query).toArray(callback);
 
 router.get('/lane/:nameOfLane',passport.authenticate('jwt', { session: false}), function(req, res, next) {
   find("discGolfLane",{name: req.params.nameOfLane},function(err, matches) {
-    //console.log(matches);
     res.send(matches);
   });
   return;
@@ -76,7 +105,7 @@ router.post('/lane/:nameOfLane',passport.authenticate('jwt', { session: false}),
       }
     console.log(newHistory);
     newHistory.save();
-    res.render("mainPage",{message:"history saved"})
+    res.send({success: true, message:"history saved"});
 });
 
 router.get('/UserslaneHistory/:numberOfHistories',passport.authenticate('jwt', { session: false}),function(req, res, next) {

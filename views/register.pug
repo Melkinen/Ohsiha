@@ -1,11 +1,13 @@
 extends unLoggedLayout
 
 block content
+  script
+    include ../javascriptFunctions/sendRegisterationForm.js
 
   h1= title
   p Here you can do the #{title}
   //register form
-  form(method='POST' action='/register')
+  form(method='POST' action='/api/register' id="registerationForm" )
     div.form-group
       label(for='name') Nimi:
       input#name.form-control(type='text', placeholder='Sinun ei tarvistse laittaa oikeaa nimeäsi...' name='name')
@@ -19,4 +21,4 @@ block content
     div.form-group
       label(for='pw2') Vahvista salasana:
       input#pw2.form-control(type='password' name='confirmPassword')
-    button.btn.btn-primary(type='submit') Rekisteröidy
+    button.btn.btn-primary(type='button' id ="submitButtonRegister" onclick="sendRegisteration()") Rekisteröidy

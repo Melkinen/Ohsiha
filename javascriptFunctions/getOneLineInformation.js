@@ -196,13 +196,11 @@ function getLane(){
 };
 
   function createForm(lanes,url, nameOfTrack){
-
     console.log("crating form");
-    //var f = document.createElement("form")
     var f = document.getElementById('form1')
-    //$( ".formPlace" ).append( f );
-    f.setAttribute('method',"POST");
+    //f.setAttribute('method',"POST");
     f.setAttribute('action',"/api/lane/"+url);
+    f.setAttribute('id','newHistoryForm')
 
 
     for (i = 0; i <=lanes; i++){
@@ -224,10 +222,31 @@ function getLane(){
     f.appendChild(input2);
 
     var s = document.createElement("input"); //input element, Submit button
-    s.setAttribute('type',"submit");
+    s.setAttribute('type',"button");
     s.setAttribute('value',"Lisää uusi historiatieto");
+    s.setAttribute("onclick","sendHistoryForm()");
 
     f.appendChild(s);
 
 
   }
+
+  function sendHistoryForm(){
+        var form =  document.getElementById("newHistoryForm");
+
+        var url = form.action; // the script where you handle the form input.
+
+        $.ajax({
+               type: "POST",
+               url: url,
+               data: $("#newHistoryForm").serialize(), // serializes the form's elements.
+               success: function(data)
+               {
+                   alert(JSON.stringify(data)); // show response from
+                  location.reload();
+
+               }
+             });
+
+        return false; // avoid to execute the actual submit of the form.
+    };

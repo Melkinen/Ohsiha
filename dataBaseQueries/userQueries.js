@@ -47,6 +47,7 @@ createNewUSer: function(req,res,next){
             if (err) {
                 console.log("error saving")
                 res.status(500).send(err)
+                return;
             }
             res.send("User information saved");
         });
